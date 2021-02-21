@@ -1,28 +1,30 @@
-// @ts-check
 const { existsSync, readFileSync } = require("fs");
 const { execSync } = require("child_process");
 const path = require("path");
 
-const installDependencies = (packageManagerName) => () => {
-  console.log(`[sync-deps] found outdated dependencies - updating...`);
-  execSync(`${packageManagerName} install`, { stdio: "inherit" });
+type SupportedPackageManagers = "yarn" | "npm" | "pnpm";
+
+const installDependencies = (packageManagerName: SupportedPackageManagers) =>
+  function () {
+    console.log(`[sync-deps] found outdated dependencies - updating...`);
+    execSync(`${packageManagerName} install`, { stdio: "inherit" });
+  };
+
+export const resolveFilenameToCwd = (filename: string): string =>
+  path.resolve(process.cwd(), filename);
+
+const lockfilePaths: Record<SupportedPackageManagers, string> = {
+  yarn: resolveFilenameToCwd("yarn.lock"),
+  npm: resolveFilenameToCwd("package-lock.json"),
+  pnpm: resolveFilenameToCwd("pnpm-lock.yaml"),
 };
 
-const resolveCwd = (filename) => path.resolve(process.cwd(), filename)
+interface PackageManager {
+  getLockedVersion: (name: string, version?: string) => string;
+  install: () => void;
+}
 
-const lockfilePaths = {
-  yarn: resolveCwd("yarn.lock"),
-  npm: resolveCwd("package-lock.json"),
-  pnpm: resolveCwd("pnpm-lock.yaml"),
-};
-
-/**
- * Parses a lockfile for yarn, npm or pnpm and returns the interface to
- * check locked versions and to install dependencies.
- *
- * @returns {PackageManager | undefined}
- */
-function initPackageManagerInterface() {
+export function initPackageManagerInterface(): PackageManager | undefined {
   // YARN
   if (existsSync(lockfilePaths.yarn)) {
     const { parse } = require("@yarnpkg/lockfile");
@@ -65,5 +67,3 @@ function initPackageManagerInterface() {
     };
   }
 }
-
-exports.initPackageManagerInterface = initPackageManagerInterface;

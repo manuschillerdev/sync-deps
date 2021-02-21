@@ -1,15 +1,15 @@
-const { initPackageManagerInterface } = require("./package-manager-interface");
+import {initPackageManagerInterface, resolveFilenameToCwd} from './package-manager-interface'
 
 const packageManager = initPackageManagerInterface();
 if (typeof packageManager === "undefined") {
   console.warn(
-    "[sync-deps] no supported lockfile found. Can't sync dependencies"
+    "[sync-deps] no supported lockfile found. Can't sync dependencies."
   );
   process.exit(0);
 }
 
 // get desired dependencies
-const pkg = require("../package.json");
+const pkg = require(resolveFilenameToCwd("./package.json"));
 const dependencies = {
   ...(pkg.dependencies || {}),
   ...(pkg.devDependencies || {}),
@@ -19,7 +19,7 @@ const dependencies = {
 for (const [name, version] of Object.entries(dependencies)) {
   try {
     const installed = require(`${name}/package.json`);
-    const lockedVersion = packageManager.getLockedVersion(name, version);
+    const lockedVersion = packageManager.getLockedVersion(name, version as string);
 
     if (!lockedVersion || installed.version !== lockedVersion) {
       packageManager.install();
@@ -29,6 +29,6 @@ for (const [name, version] of Object.entries(dependencies)) {
     // tried to require a dependency from package.json that does not exist in node_modules
     // due to a bug in yarn, yarn will NOT install these missing dependencies!
     if (e.code === "MODULE_NOT_FOUND") packageManager.install();
-    else throw e;
+    else if(e.code !== "ERR_PACKAGE_PATH_NOT_EXPORTED") throw e;
   }
 }
