@@ -5,10 +5,10 @@
   "author": "Manu Schiller",
   "license": "MIT",
   "main": "dist/sync-deps.js",
-  "module": "dist/sync-deps.module.js",
+  "bin": "./dist/sync-deps.js",
   "scripts": {
     "dev": "ts-node src/sync-deps.ts",
-    "build": "rollup -c"
+    "build": "rm -rf ./dist && rollup -c && chmod +x dist/sync-deps.js"
   },
   "dependencies": {
     "@yarnpkg/lockfile": "1.0.0",

@@ -2,8 +2,7 @@
   "compilerOptions": {
     "moduleResolution": "Node",
     "types": ["node"],
-    "resolveJsonModule": true,
-    "declaration": true
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"],
   "exclude": ["**/node_modules"]
