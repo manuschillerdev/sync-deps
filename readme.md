@@ -8,6 +8,8 @@ one? Normally you would have to manually update your dependencies. `sync-deps` c
 
 Based on your lockfile it automatically detects whether you use `npm`, `yarn` or `pnpm` and acts accordingly.
 
+heavily inspired by [this gist](https://gist.github.com/jzaefferer/39bd074b5a448cace1e3fe9f7c57e2b4)!
+
 ## Usage
 
 Install as devDependency (adds ~1MB to your `node_modules`): ` yarn add -D sync-deps`
