@@ -1,7 +1,8 @@
 {
   "name": "sync-deps",
   "description": "Compares your lockfile with installed dependencies and triggers an installation on mismatches. Works with npm, yarn and pnpm.",
-  "version": "1.0.0-rc1",
+  "version": "1.0.1-rc1",
+  "repository": "https://github.com/manuschillerdev/sync-deps",
   "author": "Manu Schiller",
   "license": "MIT",
   "main": "dist/sync-deps.js",
