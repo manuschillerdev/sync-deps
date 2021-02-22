@@ -10,7 +10,7 @@ if (typeof packageManager === "undefined") {
 
 // get desired dependencies
 const pkg = require(resolveFilenameToCwd("./package.json"));
-const dependencies = {
+const dependencies: Record<string, string> = {
   ...(pkg.dependencies || {}),
   ...(pkg.devDependencies || {}),
 };
@@ -19,7 +19,7 @@ const dependencies = {
 for (const [name, version] of Object.entries(dependencies)) {
   try {
     const installed = require(`${name}/package.json`);
-    const lockedVersion = packageManager.getLockedVersion(name, version as string);
+    const lockedVersion = packageManager.getLockedVersion(name, version);
 
     if (!lockedVersion || installed.version !== lockedVersion) {
       packageManager.install();
