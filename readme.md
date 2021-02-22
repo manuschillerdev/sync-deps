@@ -30,20 +30,17 @@ Example - in a NextJS environment:
 ### Option two: usage with husky on `post-checkout`
 In this case sync-deps checks your dependencies, whenever you check out a different branch via `git`.
 
+with yarn:
 ```bash
 yarn add -D husky
+yarn husky install
+yarn husky add .husky/post-checkout "sync-deps"
 ```
 
-```json
-{
-  "scripts": {
-    "dev": "next",
-    "sync-deps": "sync-deps"
-  },
-  "husky": {
-    "hooks": {
-      "post-checkout": "sync-deps"
-    }
-  }
-}
+with npx:
+```bash
+npm install husky --save-dev
+npx husky install
+npx husky add .husky/post-checkout "sync-deps"
 ```
+
