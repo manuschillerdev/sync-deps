@@ -20,7 +20,7 @@ const lockfilePaths: Record<SupportedPackageManagers, string> = {
 };
 
 interface PackageManager {
-  getLockedVersion: (name: string, version?: string) => string;
+  getLockedVersion: (name: string, version: string) => string;
   install: () => void;
 }
 
